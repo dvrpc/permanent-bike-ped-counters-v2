@@ -30,14 +30,16 @@ type FeatureState = {
 interface Props {
   setSelectedCounter: (counterId: number) => void;
   selectedCounter: number | undefined;
+  hoveredCounter: number | undefined;
 }
 
 export default function MapboxMap(props: Props) {
-  const { selectedCounter, setSelectedCounter } = props;
+  const { selectedCounter, setSelectedCounter, hoveredCounter } = props;
 
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const hoverRef = useRef<FeatureState | null>(null);
   const selectRef = useRef<FeatureState | null>(null);
+  const popupRef = useRef<mapboxgl.Popup | null>(null);
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const setFeatureState = (
@@ -75,6 +77,14 @@ export default function MapboxMap(props: Props) {
     const source = e.features[0].source + "";
     hoverRef.current = { id, source };
     setFeatureState(id, source, { hover: true });
+
+    const locationName = e.features[0].properties?.LOCATIONNAME;
+    if (locationName && popupRef.current) {
+      popupRef.current
+        .setLngLat(e.lngLat)
+        .setText(String(locationName))
+        .addTo(mapRef.current);
+    }
   };
 
   const handleMouseLeave = () => {
@@ -85,6 +95,7 @@ export default function MapboxMap(props: Props) {
         hover: false,
       });
     hoverRef.current = null;
+    popupRef.current?.remove();
   };
 
   const handleClick = (e: MouseEvent) => {
@@ -103,6 +114,24 @@ export default function MapboxMap(props: Props) {
     }
     setFeatureState(id, source, { selected: true });
   };
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    if (hoverRef.current) {
+      setFeatureState(hoverRef.current.id, hoverRef.current.source, {
+        hover: false,
+      });
+    }
+
+    if (hoveredCounter === undefined) {
+      hoverRef.current = null;
+      return;
+    }
+
+    setFeatureState(hoveredCounter, "permBikePedCounts", { hover: true });
+    hoverRef.current = { id: hoveredCounter, source: "permBikePedCounts" };
+  }, [hoveredCounter]);
 
   useEffect(() => {
     if (!mapRef.current || !selectedCounter) return;
@@ -132,6 +161,11 @@ export default function MapboxMap(props: Props) {
     });
 
     mapRef.current = map;
+    popupRef.current = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+      offset: 12,
+    });
 
     map.on("load", () => {
       map.resize();
@@ -145,7 +179,10 @@ export default function MapboxMap(props: Props) {
     map.on("mouseleave", ["permBikePedCounts"], handleMouseLeave);
     map.on("click", ["permBikePedCounts"], handleClick);
 
-    return () => map.remove();
+    return () => {
+      popupRef.current?.remove();
+      map.remove();
+    };
   }, []);
 
   return (

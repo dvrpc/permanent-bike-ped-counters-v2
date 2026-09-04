@@ -5,6 +5,7 @@ import { useState } from "react";
 
 function App() {
   const [selectedCounter, setSelectedCounter] = useState<number>();
+  const [hoveredCounter, setHoveredCounter] = useState<number>();
 
   return (
     <div className="h-screen flex flex-col">
@@ -15,12 +16,14 @@ function App() {
             <ContentPanel
               selectedCounter={selectedCounter}
               setSelectedCounter={setSelectedCounter}
+              setHoveredCounter={setHoveredCounter}
             />
           </div>
           <div className="w-1/2 h-full min-h-0">
             <MapboxMap
               selectedCounter={selectedCounter}
               setSelectedCounter={setSelectedCounter}
+              hoveredCounter={hoveredCounter}
             />
           </div>
         </div>

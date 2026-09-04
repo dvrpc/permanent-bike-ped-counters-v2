@@ -6,6 +6,7 @@ import React from "react";
 interface Props {
   counts: CountProperties[] | undefined;
   setSelectedCounter: (counterId: number) => void;
+  setHoveredCounter: (counterId: number | undefined) => void;
   selectedCounter: number | undefined;
   previousMonthNum: number;
   selectedTableOption: TableOption;
@@ -15,6 +16,7 @@ export default function CountTable(props: Props) {
     counts,
     selectedCounter,
     setSelectedCounter,
+    setHoveredCounter,
     previousMonthNum,
     selectedTableOption,
   } = props;
@@ -84,8 +86,15 @@ export default function CountTable(props: Props) {
                 ref={(element) => {
                   rowRefs.current[count.LOCATIONID] = element;
                 }}
-                className="hover:bg-slate-50 hover:cursor-pointer"
+                aria-selected={selectedCounter === count.LOCATIONID}
+                className={`cursor-pointer border-l-4 transition-colors ${
+                  selectedCounter === count.LOCATIONID
+                    ? "border-dvrpc-blue-3 bg-dvrpc-blue-7 font-semibold"
+                    : "border-transparent hover:border-slate-300 hover:bg-slate-100"
+                }`}
                 onClick={() => setSelectedCounter(count.LOCATIONID)}
+                onMouseEnter={() => setHoveredCounter(count.LOCATIONID)}
+                onMouseLeave={() => setHoveredCounter(undefined)}
               >
                 <td className="px-4 py-3 text-sm text-slate-800">
                   {count.LOCATIONNAME}

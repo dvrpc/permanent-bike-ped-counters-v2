@@ -7,10 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
-  base:
-    process.env.NODE_ENV === "production"
-      ? "/webmaps/regional-health-tool"
-      : "/",
+  base: process.env.NODE_ENV === "production" ? "/webmaps/permbikeped" : "/",
 
   resolve: {
     alias: {

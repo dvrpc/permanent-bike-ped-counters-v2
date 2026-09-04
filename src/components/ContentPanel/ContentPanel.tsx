@@ -10,6 +10,7 @@ const previousMonthNum =
 interface Props {
   selectedCounter: number | undefined;
   setSelectedCounter: (counterId: number) => void;
+  setHoveredCounter: (counterId: number | undefined) => void;
 }
 
 const tableOptions: TableOption[] = [
@@ -18,7 +19,7 @@ const tableOptions: TableOption[] = [
   "Bike Counts",
 ];
 export default function ContentPanel(props: Props) {
-  const { selectedCounter, setSelectedCounter } = props;
+  const { selectedCounter, setSelectedCounter, setHoveredCounter } = props;
   const [selectedTableOption, setSelectedTableOption] =
     useState<TableOption>("All Counts");
   const [counts, setCounts] = useState<CountProperties[]>();
@@ -75,6 +76,7 @@ export default function ContentPanel(props: Props) {
       <CountTable
         counts={counts}
         setSelectedCounter={setSelectedCounter}
+        setHoveredCounter={setHoveredCounter}
         previousMonthNum={previousMonthNum}
         selectedCounter={selectedCounter}
         selectedTableOption={selectedTableOption}
