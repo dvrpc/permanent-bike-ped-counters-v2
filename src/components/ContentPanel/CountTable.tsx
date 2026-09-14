@@ -101,22 +101,26 @@ export default function CountTable(props: Props) {
                 </td>
                 {showBikeColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count[`BIKE${previousMonthNum}` as keyof CountProperties]}
+                    {count[
+                      `BIKE${previousMonthNum}` as keyof CountProperties
+                    ].toLocaleString()}
                   </td>
                 )}
                 {showPedColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count[`PED${previousMonthNum}` as keyof CountProperties]}
+                    {count[
+                      `PED${previousMonthNum}` as keyof CountProperties
+                    ].toLocaleString()}
                   </td>
                 )}
                 {showBikeColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count.BIKE_YR}
+                    {count.BIKE_YR.toLocaleString()}
                   </td>
                 )}
                 {showPedColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count.PED_YR}
+                    {count.PED_YR.toLocaleString()}
                   </td>
                 )}
               </tr>

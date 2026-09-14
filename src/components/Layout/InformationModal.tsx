@@ -127,7 +127,30 @@ export default function InformationModal({ onClose }: InformationModalProps) {
                 obtained from this website.
               </p>
               <br />
-              <div className="p-2 bg-dvrpc-blue-7 rounded-md shadow-sm">
+              <div className="">
+                N/A - Data Not Available.
+                <br />
+                <br /> D&L Canal Trail (Tinicum Park) is operated by{" "}
+                <a href="https://delawareandlehigh.org/" target="_blank">
+                  Delaware & Lehigh National Heritage Area
+                </a>
+                .
+                <br /> Delaware River Trail (Waterfront) is operated by{" "}
+                <a
+                  href="https://www.delawareriverwaterfront.com/"
+                  target="_blank"
+                >
+                  Delaware River Waterfront Corporation
+                </a>
+                .
+                <br />
+                <br /> Data is reported by automated cyclist and pedestrian
+                counting equipment and is not adjusted to correct errors due to
+                equipment malfunction or failure. Select station locations are
+                recording data for only one type of mode. Please review
+                disclaimer or contact DVRPC for more info.
+              </div>
+              <div className="p-2 bg-dvrpc-blue-7 rounded-md shadow-sm mt-4">
                 <p>
                   This web page is a public resource of general information. The
                   Delaware Valley Regional Planning Commission (DVRPC) makes no
