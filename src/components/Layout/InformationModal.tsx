@@ -89,14 +89,14 @@ export default function InformationModal({ onClose }: InformationModalProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Traffic Count Webmap
+                  Traffic Count Webmap.
                 </a>
               </p>
               <br />
               <p>
-                DVRPC personnel installed and maintain the equipment on an
-                ongoing basis. Additional funding for acquisition of the
-                counters was provided by the{" "}
+                DVRPC personnel install and maintain the equipment on an ongoing
+                basis. Additional funding for acquisition of the counters was
+                provided by the{" "}
                 <a
                   href="https://www.williampennfoundation.org/"
                   target="_blank"
@@ -144,7 +144,7 @@ export default function InformationModal({ onClose }: InformationModalProps) {
                 </a>
                 .
                 <br />
-                <br /> Data is reported by automated cyclist and pedestrian
+                <br /> Data is reported by automated bicyclist and pedestrian
                 counting equipment and is not adjusted to correct errors due to
                 equipment malfunction or failure. Select station locations are
                 recording data for only one type of mode. Please review

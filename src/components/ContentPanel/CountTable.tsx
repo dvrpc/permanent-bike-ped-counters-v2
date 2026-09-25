@@ -30,6 +30,14 @@ export default function CountTable(props: Props) {
   const colSpan = selectedTableOption == "All Counts" ? 2 : 1;
   const rowRefs = useRef<Record<number, HTMLTableRowElement | null>>({});
 
+  const formatCountValue = (value: number | undefined) => {
+    if (value === undefined || value === null || value === 0) {
+      return "N/A";
+    }
+
+    return value.toLocaleString();
+  };
+
   useEffect(() => {
     if (selectedCounter === undefined) return;
 
@@ -57,7 +65,7 @@ export default function CountTable(props: Props) {
           </th>
           {showBikeColumns && (
             <th className="px-4 py-3 text-sm font-semibold uppercase tracking-wide">
-              Cyclists
+              Bicyclists
             </th>
           )}
           {showPedColumns && (
@@ -67,7 +75,7 @@ export default function CountTable(props: Props) {
           )}
           {showBikeColumns && (
             <th className="px-4 py-3 text-sm font-semibold uppercase tracking-wide">
-              Cyclists
+              Bicyclists
             </th>
           )}
           {showPedColumns && (
@@ -101,26 +109,30 @@ export default function CountTable(props: Props) {
                 </td>
                 {showBikeColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count[
-                      `BIKE${previousMonthNum}` as keyof CountProperties
-                    ].toLocaleString()}
+                    {formatCountValue(
+                      count[
+                        `BIKE${previousMonthNum}` as keyof CountProperties
+                      ] as number | undefined,
+                    )}
                   </td>
                 )}
                 {showPedColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count[
-                      `PED${previousMonthNum}` as keyof CountProperties
-                    ].toLocaleString()}
+                    {formatCountValue(
+                      count[
+                        `PED${previousMonthNum}` as keyof CountProperties
+                      ] as number | undefined,
+                    )}
                   </td>
                 )}
                 {showBikeColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count.BIKE_YR.toLocaleString()}
+                    {formatCountValue(count.BIKE_YR)}
                   </td>
                 )}
                 {showPedColumns && (
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {count.PED_YR.toLocaleString()}
+                    {formatCountValue(count.PED_YR)}
                   </td>
                 )}
               </tr>
