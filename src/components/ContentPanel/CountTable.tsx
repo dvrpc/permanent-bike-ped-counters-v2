@@ -8,7 +8,6 @@ interface Props {
   setSelectedCounter: (counterId: number) => void;
   setHoveredCounter: (counterId: number | undefined) => void;
   selectedCounter: number | undefined;
-  previousMonthNum: number;
   selectedTableOption: TableOption;
 }
 export default function CountTable(props: Props) {
@@ -17,7 +16,6 @@ export default function CountTable(props: Props) {
     selectedCounter,
     setSelectedCounter,
     setHoveredCounter,
-    previousMonthNum,
     selectedTableOption,
   } = props;
 
@@ -87,84 +85,89 @@ export default function CountTable(props: Props) {
       </thead>
       <tbody className="divide-y divide-slate-200 bg-white">
         {counts ? (
-          counts.map((count) => (
-            <React.Fragment key={count.LOCATIONID}>
-              <tr
-                key={count.LOCATIONID}
-                ref={(element) => {
-                  rowRefs.current[count.LOCATIONID] = element;
-                }}
-                aria-selected={selectedCounter === count.LOCATIONID}
-                className={`cursor-pointer border-l-4 transition-colors ${
-                  selectedCounter === count.LOCATIONID
-                    ? "border-dvrpc-blue-3 bg-dvrpc-blue-7 font-semibold"
-                    : "border-transparent hover:border-slate-300 hover:bg-slate-100"
-                }`}
-                onClick={() => setSelectedCounter(count.LOCATIONID)}
-                onMouseEnter={() => setHoveredCounter(count.LOCATIONID)}
-                onMouseLeave={() => setHoveredCounter(undefined)}
-              >
-                <td className="px-4 py-3 text-sm text-slate-800">
-                  {count.LOCATIONNAME}
-                </td>
-                {showBikeColumns && (
+          counts.map((count) => {
+            const showBikeChart = showBikeColumns && Boolean(count.BIKE_YR);
+            const showPedChart = showPedColumns && Boolean(count.PED_YR);
+
+            return (
+              <React.Fragment key={count.LOCATIONID}>
+                <tr
+                  key={count.LOCATIONID}
+                  ref={(element) => {
+                    rowRefs.current[count.LOCATIONID] = element;
+                  }}
+                  aria-selected={selectedCounter === count.LOCATIONID}
+                  className={`cursor-pointer border-l-4 transition-colors ${
+                    selectedCounter === count.LOCATIONID
+                      ? "border-dvrpc-blue-3 bg-dvrpc-blue-7 font-semibold"
+                      : "border-transparent hover:border-slate-300 hover:bg-slate-100"
+                  }`}
+                  onClick={() => setSelectedCounter(count.LOCATIONID)}
+                  onMouseEnter={() => setHoveredCounter(count.LOCATIONID)}
+                  onMouseLeave={() => setHoveredCounter(undefined)}
+                >
                   <td className="px-4 py-3 text-sm text-slate-800">
-                    {formatCountValue(
-                      count[
-                        `BIKE${previousMonthNum}` as keyof CountProperties
-                      ] as number | undefined,
-                    )}
+                    {count.LOCATIONNAME}
                   </td>
-                )}
-                {showPedColumns && (
-                  <td className="px-4 py-3 text-sm text-slate-800">
-                    {formatCountValue(
-                      count[
-                        `PED${previousMonthNum}` as keyof CountProperties
-                      ] as number | undefined,
-                    )}
-                  </td>
-                )}
-                {showBikeColumns && (
-                  <td className="px-4 py-3 text-sm text-slate-800">
-                    {formatCountValue(count.BIKE_YR)}
-                  </td>
-                )}
-                {showPedColumns && (
-                  <td className="px-4 py-3 text-sm text-slate-800">
-                    {formatCountValue(count.PED_YR)}
-                  </td>
-                )}
-              </tr>
-              {selectedCounter === count.LOCATIONID && (
-                <tr>
-                  <td
-                    colSpan={selectedTableOption === "All Counts" ? 5 : 3}
-                    className="p-4"
-                  >
-                    <div className="flex flex-wrap">
-                      {showBikeColumns && (
-                        <div className="w-1/2 min-w-sm ">
-                          <VolumeByMonthChart
-                            type={"Bike Counts"}
-                            count={count}
-                          />
-                        </div>
+                  {showBikeColumns && (
+                    <td className="px-4 py-3 text-sm text-slate-800">
+                      {formatCountValue(
+                        count[`BIKE1` as keyof CountProperties] as
+                          | number
+                          | undefined,
                       )}
-                      {showPedColumns && (
-                        <div className="w-1/2 min-w-sm">
-                          <VolumeByMonthChart
-                            type={"Pedestrian Counts"}
-                            count={count}
-                          />
-                        </div>
+                    </td>
+                  )}
+                  {showPedColumns && (
+                    <td className="px-4 py-3 text-sm text-slate-800">
+                      {formatCountValue(
+                        count[`PED1` as keyof CountProperties] as
+                          | number
+                          | undefined,
                       )}
-                    </div>
-                  </td>
+                    </td>
+                  )}
+                  {showBikeColumns && (
+                    <td className="px-4 py-3 text-sm text-slate-800">
+                      {formatCountValue(count.BIKE_YR)}
+                    </td>
+                  )}
+                  {showPedColumns && (
+                    <td className="px-4 py-3 text-sm text-slate-800">
+                      {formatCountValue(count.PED_YR)}
+                    </td>
+                  )}
                 </tr>
-              )}
-            </React.Fragment>
-          ))
+                {selectedCounter === count.LOCATIONID && (
+                  <tr>
+                    <td
+                      colSpan={selectedTableOption === "All Counts" ? 5 : 3}
+                      className="p-4"
+                    >
+                      <div className="flex flex-wrap">
+                        {showBikeChart && (
+                          <div className="w-1/2 min-w-sm ">
+                            <VolumeByMonthChart
+                              type={"Bike Counts"}
+                              count={count}
+                            />
+                          </div>
+                        )}
+                        {showPedChart && (
+                          <div className="w-1/2 min-w-sm">
+                            <VolumeByMonthChart
+                              type={"Pedestrian Counts"}
+                              count={count}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            );
+          })
         ) : (
           <tr>
             <td

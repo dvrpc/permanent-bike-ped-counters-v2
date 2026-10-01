@@ -4,9 +4,6 @@ import type { GeoJSONFeature } from "mapbox-gl";
 import CountTable from "./CountTable";
 import CsvExportButton from "./CsvExportButton";
 
-const previousMonthNum =
-  new Date().getMonth() === 0 ? 12 : new Date().getMonth();
-
 interface Props {
   selectedCounter: number | undefined;
   setSelectedCounter: (counterId: number) => void;
@@ -77,7 +74,6 @@ export default function ContentPanel(props: Props) {
         counts={counts}
         setSelectedCounter={setSelectedCounter}
         setHoveredCounter={setHoveredCounter}
-        previousMonthNum={previousMonthNum}
         selectedCounter={selectedCounter}
         selectedTableOption={selectedTableOption}
       />

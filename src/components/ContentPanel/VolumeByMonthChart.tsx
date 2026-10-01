@@ -24,37 +24,44 @@ ChartJS.register(
   Legend,
 );
 
-const options = {
-  responsive: true,
-  stacked: true,
-  plugins: {
-    legend: {
-      position: "top" as const,
-    },
-    title: {
-      display: true,
-      text: "Volume By Month",
-    },
-  },
-  scales: {
-    x: {
-      stacked: true,
-      ticks: {
-        maxRotation: 45,
-        minRotation: 45,
-      },
-    },
-    y: {
-      stacked: true,
-      beginAtZero: true,
-    },
-  },
-};
-
 const monthNums = Array.from({ length: 12 }, (_, i) => i + 1).reverse();
 
 export default function VolumeByMonthChart(props: Props) {
   const { type, count } = props;
+
+  const chartTitle =
+    type === "Bike Counts"
+      ? "Bike volume by month"
+      : type === "Pedestrian Counts"
+        ? "Pedestrian volume by month"
+        : "Bike and pedestrian volume by month";
+
+  const options = {
+    responsive: true,
+    stacked: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: chartTitle,
+      },
+    },
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          maxRotation: 45,
+          minRotation: 45,
+        },
+      },
+      y: {
+        stacked: true,
+        beginAtZero: true,
+      },
+    },
+  };
 
   const labels = monthNums.map(
     (monthNum) => count[`MONTH${monthNum}` as keyof CountProperties],
